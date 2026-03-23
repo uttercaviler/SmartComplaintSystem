@@ -1,0 +1,35 @@
+﻿# Maven
+target/
+*.jar
+*.war
+*.ear
+.classpath
+.project
+.settings/
+*.class
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Database
+*.db
+*.mv.db
+backend/data/
+
+# Environment
+.env
+.env.local
+
+# OS
+Thumbs.db
