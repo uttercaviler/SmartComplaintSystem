@@ -1,0 +1,34 @@
+.complaint-card {
+  border: 1px solid #cfdbff;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fbfdff;
+}
+
+.complaint-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.complaint-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.status-pill {
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  background: #e8f0ff;
+  color: #1f49aa;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.meta {
+  margin: 8px 0;
+  color: #5c6d8c;
+  font-size: 0.85rem;
+}
