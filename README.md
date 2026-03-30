@@ -6,11 +6,13 @@ A role-based complaint management system with:
 - Complaint submission and tracking
 - Admin complaint status updates and analytics
 - Modern responsive UI
+- MySQL-backed persistence
 
 ## Tech Stack
 
 - Frontend: React (Create React App)
-- Backend: Java HttpServer (standalone)
+- Backend: Java HttpServer (standalone, JDBC)
+- Database: MySQL
 - Auth: JWT (HMAC SHA-256)
 
 ## Project Structure
@@ -33,11 +35,20 @@ A role-based complaint management system with:
 
 From project root:
 
+Set MySQL-related environment variables in the terminal before starting:
+
+```powershell
+$env:DB_URL = "jdbc:mysql://localhost:3306/smart_complaint_system?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+$env:DB_USER = "root"
+$env:DB_PASSWORD = "root"
+$env:TOKEN_SECRET = "replace-with-strong-secret"
+```
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File backend/start-backend.ps1
 ```
 
-Backend runs on `http://localhost:8080`.
+Backend runs on `http://localhost:8080` by default and uses `PORT` if provided.
 
 ### 2. Start Frontend
 
@@ -87,3 +98,4 @@ Frontend runs on `http://localhost:3000`.
 
 - This repository currently includes `frontend/build` artifacts from the latest build.
 - If you want a source-only repository, remove `frontend/build` and keep it ignored in `.gitignore`.
+- Backend now persists users and complaints in MySQL.
