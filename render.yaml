@@ -18,8 +18,9 @@ services:
       - key: DB_PASSWORD
         sync: false
 
-  - type: static
+  - type: web
     name: smart-complaint-frontend
+    env: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: build
