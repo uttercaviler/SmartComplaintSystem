@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: smart-complaint-backend
+    env: java
+    plan: free
+    buildCommand: |
+      mkdir -p backend/lib backend/out
+      curl -L -o backend/lib/mysql-connector-j-9.3.0.jar https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.3.0/mysql-connector-j-9.3.0.jar
+      javac -cp backend/lib/mysql-connector-j-9.3.0.jar -d backend/out backend/src/main/java/com/smartcomplaintsystem/SimpleBackendServer.java
+    startCommand: java -cp backend/out:backend/lib/mysql-connector-j-9.3.0.jar com.smartcomplaintsystem.SimpleBackendServer
+    envVars:
+      - key: TOKEN_SECRET
+        generateValue: true
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+
+  - type: static
+    name: smart-complaint-frontend
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_BASE_URL
+        sync: false

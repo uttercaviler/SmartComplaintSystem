@@ -94,6 +94,82 @@ Frontend runs on `http://localhost:3000`.
 - `PATCH /api/complaints/{id}/status`
 - `GET /api/analytics`
 
+## Deploy (Aiven + Render)
+
+### 1. Prepare Aiven MySQL
+
+- In Aiven Console, open your MySQL service and copy:
+  - `host`
+  - `port`
+  - `username`
+  - `password`
+  - `database name`
+- Ensure database exists:
+
+```sql
+CREATE DATABASE IF NOT EXISTS smart_complaint_system;
+```
+
+### 2. Push code to GitHub
+
+```powershell
+git add .
+git commit -m "Prepare Render + Aiven deployment"
+git push origin main
+```
+
+### 3. Create services in Render
+
+- Use `render.yaml` at project root (Blueprint deploy), or create services manually.
+- If creating manually, use these settings:
+
+Backend (Web Service)
+- Environment: `Java`
+- Build Command:
+
+```bash
+mkdir -p backend/lib backend/out
+curl -L -o backend/lib/mysql-connector-j-9.3.0.jar https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.3.0/mysql-connector-j-9.3.0.jar
+javac -cp backend/lib/mysql-connector-j-9.3.0.jar -d backend/out backend/src/main/java/com/smartcomplaintsystem/SimpleBackendServer.java
+```
+
+- Start Command:
+
+```bash
+java -cp backend/out:backend/lib/mysql-connector-j-9.3.0.jar com.smartcomplaintsystem.SimpleBackendServer
+```
+
+- Environment Variables:
+
+```text
+TOKEN_SECRET=<strong-random-secret>
+DB_URL=jdbc:mysql://<AIVEN_HOST>:<AIVEN_PORT>/smart_complaint_system?sslMode=REQUIRED&serverTimezone=UTC
+DB_USER=<AIVEN_USERNAME>
+DB_PASSWORD=<AIVEN_PASSWORD>
+```
+
+Frontend (Static Site)
+- Root Directory: `frontend`
+- Build Command: `npm ci && npm run build`
+- Publish Directory: `build`
+- Environment Variable:
+
+```text
+REACT_APP_API_BASE_URL=https://<your-backend-service>.onrender.com/api
+```
+
+### 4. Verify deployment
+
+- Open backend health URL:
+
+```text
+https://<your-backend-service>.onrender.com/api/health
+```
+
+- Open frontend URL and test login:
+  - User: `user / user123`
+  - Admin: `admin / admin123`
+
 ## Notes
 
 - This repository currently includes `frontend/build` artifacts from the latest build.
