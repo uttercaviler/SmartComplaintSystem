@@ -1,13 +1,9 @@
 services:
   - type: web
     name: smart-complaint-backend
-    env: java
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
     plan: free
-    buildCommand: |
-      mkdir -p backend/lib backend/out
-      curl -L -o backend/lib/mysql-connector-j-9.3.0.jar https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.3.0/mysql-connector-j-9.3.0.jar
-      javac -cp backend/lib/mysql-connector-j-9.3.0.jar -d backend/out backend/src/main/java/com/smartcomplaintsystem/SimpleBackendServer.java
-    startCommand: java -cp backend/out:backend/lib/mysql-connector-j-9.3.0.jar com.smartcomplaintsystem.SimpleBackendServer
     envVars:
       - key: TOKEN_SECRET
         generateValue: true
@@ -20,7 +16,7 @@ services:
 
   - type: web
     name: smart-complaint-frontend
-    env: static
+    runtime: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: build
